@@ -59,3 +59,6 @@ async def fetch_source(source: str, q: str = Query(None), limit: int = Query(100
                 raise HTTPException(status_code=500, detail=str(e))
             return {"items": [normalize(i) for i in items]}
     raise HTTPException(status_code=404, detail="source not found")
+
+if __name__ == "__main__":
+    input("\nDebug pause: Press Enter to exit...")

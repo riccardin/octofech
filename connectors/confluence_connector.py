@@ -2,6 +2,7 @@
 from typing import List, Dict, Optional
 from .base_connector import BaseConnector
 from atlassian import Confluence
+import os
 
 class ConfluenceConnector(BaseConnector):
     def name(self) -> str:
@@ -9,18 +10,21 @@ class ConfluenceConnector(BaseConnector):
 
     def _get_client(self):
         return Confluence(
-            url=self.config.get("base_url"),
-            username=self.config.get("user"),
-            password=self.config.get("token"),
-            cloud=True
+            url=os.getenv("CONFLUENCE_URL"),
+            username=os.getenv("JIRA_USERNAME"),
+            password=os.getenv("CONFLUENCE_TOKEN"),
+            verify_ssl=False
         )
 
     def fetch(self, space_key: str = None, cql: str = None, limit: Optional[int] = 100) -> List[Dict]:
-        if not cql and not space_key:
-            raise ValueError("space_key or cql must be provided")
+        #if not cql and not space_key:
+         #   raise ValueError("space_key or cql must be provided")
         client = self._get_client()
-        query = cql or f'space = "{space_key}" ORDER BY lastmodified DESC'
-        results = client.cql(query, limit=limit).get("results", [])
+        
+       # query = cql or f'space = "{space_key}" ORDER BY lastmodified DESC'
+        #results = client.cql(query, limit=limit).get("results", [])
+        cql = 'creator = "Rick.Magana" ORDER BY lastmodified DESC'
+        results = client.cql(cql, limit=10).get("results", [])
         final = []
         for item in results[:limit]:
             page = client.get_page_by_id(item["id"], expand="body.storage,version,history,metadata.labels")

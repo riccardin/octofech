@@ -1,0 +1,12 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "open-browser",
+            "type": "shell",
+            "command": "open",
+            "args": ["http://127.0.0.1:8000"],
+            "problemMatcher": []
+        }
+    ]
+}
