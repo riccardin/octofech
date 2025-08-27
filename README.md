@@ -58,3 +58,6 @@ Once the application is running, you can access:
 
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
+
+## References
+[Atlassian Documentation](https://confluence.atlassian.com/alldoc/atlassian-documentation-32243719.html)
