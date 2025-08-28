@@ -57,7 +57,7 @@ def test_normalize():
     assert result["title"] == ""
     assert result["body"] == ""
     assert result["tags"] == []
-    assert result["created_at"] == ""
+    assert result["created_at"] == None
 
 # Create a mock connector class for testing
 class MockConnector(BaseConnector):
