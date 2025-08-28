@@ -60,5 +60,19 @@ async def fetch_source(source: str, q: str = Query(None), limit: int = Query(100
             return {"items": [normalize(i) for i in items]}
     raise HTTPException(status_code=404, detail="source not found")
 
+@app.get("/users/{source}")
+async def get_users(source: str, q: str = Query("")):
+    for cls in CONNECTOR_CLASSES:
+        inst = cls(build_config(cls.__name__.split(".")[-1].upper()))
+        if inst.name() == source:
+            try:
+                if source == "jira":
+                    return await inst.get_all_users(query=q)
+                else:
+                    raise HTTPException(status_code=400, detail=f"Getting users not supported for {source}")
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=str(e))
+    raise HTTPException(status_code=404, detail="source not found")
+
 if __name__ == "__main__":
     input("\nDebug pause: Press Enter to exit...")

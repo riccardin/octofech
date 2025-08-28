@@ -46,6 +46,9 @@ class JiraConnector(BaseConnector):
     async def get_assigned_issues(self, assignee_email):
         jql = f'assignee = "{assignee_email}" ORDER BY created DESC'
         return await asyncio.to_thread(self.client.jql, jql)
+        
+    async def get_all_users(self, query=""):
+        return await asyncio.to_thread(self._get_client().user_find_by_user_string, query)
 
     def fetch_assigned(self, assignee: str, limit: Optional[int] = 200) -> List[Dict]:
         jql = f'assignee = "{assignee}" ORDER BY created DESC'
